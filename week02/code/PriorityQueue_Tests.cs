@@ -6,24 +6,62 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 public class PriorityQueueTests
 {
     [TestMethod]
-    // Scenario: 
-    // Expected Result: 
-    // Defect(s) Found: 
+    // Scenario: Add 3 items that have different priorities.
+    // Expected Result: Dequeue should return the value with the highest priority.
+    // Defect(s) Found: No defect found.
     public void TestPriorityQueue_1()
     {
         var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+
+        priorityQueue.Enqueue("low", 1);
+        priorityQueue.Enqueue("high", 5);
+        priorityQueue.Enqueue("mid", 3);
+
+        var result = priorityQueue.Dequeue();
+
+        Assert.AreEqual("high", result);
     }
 
     [TestMethod]
-    // Scenario: 
-    // Expected Result: 
-    // Defect(s) Found: 
+    // Scenario: Add three items where two items share the highest priority.
+    // Expected Result: Dequeue should return the tied highest-priority items in FIFO order.
+    // Defect(s) Found: When multiple items have the same highest priority, dequeue does not return them in FIFO order.
     public void TestPriorityQueue_2()
     {
         var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+
+        priorityQueue.Enqueue("first", 1);
+        priorityQueue.Enqueue("second", 4);
+        priorityQueue.Enqueue("third", 4);
+
+        Assert.AreEqual("second", priorityQueue.Dequeue());
+        Assert.AreEqual("third", priorityQueue.Dequeue());
     }
 
-    // Add more test cases as needed below.
+    [TestMethod]
+    // Scenario: Try to dequeue from an empty priority queue.
+    // Expected Result: An InvalidOperationException should be thrown with the message "The queue is empty."
+    // Defect(s) Found: No defect found.
+    public void TestPriorityQueue_3()
+    {
+        var priorityQueue = new PriorityQueue();
+
+        try
+        {
+            priorityQueue.Dequeue();
+            Assert.Fail("Exception should have been thrown.");
+        }
+        catch (InvalidOperationException ex)
+        {
+            Assert.AreEqual("The queue is empty.", ex.Message);
+        }
+        catch (AssertFailedException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception of type {ex.GetType()} caught: {ex.Message}");
+        }
+    }
 }
